@@ -77,7 +77,11 @@ namespace OnlineBookStore.Database
                 .HasForeignKey(ob => ob.BookId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
+            modelBuilder.Entity<OrderBook>()
+                .HasOne(ob => ob.Book)  
+                .WithMany(b => b.OrderBooks)  
+                .HasForeignKey(ob => ob.BookId)
+                .OnDelete(DeleteBehavior.Cascade);  
         }
     }
 

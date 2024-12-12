@@ -45,5 +45,14 @@ namespace OnlineBookStore.Views
         {
             MessageBox.Show("Notify customers functionality will be added soon.", "Notification");
         }
+
+        private void LogoutButton_Click(object sender, RoutedEventArgs e)
+        {
+            var mainWindow = new MainWindow();
+            mainWindow.Show();
+            this.Close();
+
+
+        }
     }
 }

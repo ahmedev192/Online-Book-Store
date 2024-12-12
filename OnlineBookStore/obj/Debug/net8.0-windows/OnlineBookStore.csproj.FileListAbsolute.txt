@@ -178,3 +178,4 @@ C:\Users\Ahmed\source\repos\OnlineBookStore\OnlineBookStore\bin\Debug\net8.0-win
 C:\Users\Ahmed\source\repos\OnlineBookStore\OnlineBookStore\bin\Debug\net8.0-windows\LiveCharts.Wpf.dll
 C:\Users\Ahmed\source\repos\OnlineBookStore\OnlineBookStore\obj\Debug\net8.0-windows\Views\BookDetailsView.baml
 C:\Users\Ahmed\source\repos\OnlineBookStore\OnlineBookStore\obj\Debug\net8.0-windows\Views\BookDetailsView.g.cs
+C:\Users\Ahmed\source\repos\OnlineBookStore\OnlineBookStore\obj\Debug\net8.0-windows\OnlineBookStore.sourcelink.json

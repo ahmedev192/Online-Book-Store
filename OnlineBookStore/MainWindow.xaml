@@ -5,28 +5,61 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OnlineBookStore"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
-    >
+        Title="MainWindow" Height="450" Width="800">
+
+    <!-- Add a resource dictionary for styling -->
+    <Window.Resources>
+        <!-- Style for Labels -->
+        <Style TargetType="Label">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="#333" />
+        </Style>
+
+        <!-- Style for TextBox and PasswordBox -->
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderBrush" Value="#007ACC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+        <Style TargetType="PasswordBox">
+            <Setter Property="Margin" Value="0,5,0,0" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="BorderBrush" Value="#007ACC" />
+            <Setter Property="BorderThickness" Value="1" />
+        </Style>
+
+        <!-- Style for Buttons -->
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Padding" Value="10,5" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Background" Value="#007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <!-- Username Label -->
             <RowDefinition Height="Auto" />
-            <!-- Username Input -->
             <RowDefinition Height="20" />
-            <!-- Spacer -->
             <RowDefinition Height="Auto" />
-            <!-- Password Label -->
             <RowDefinition Height="Auto" />
-            <!-- Password Input -->
             <RowDefinition Height="30" />
-            <!-- Spacer -->
             <RowDefinition Height="Auto" />
-            <!-- Login Button -->
             <RowDefinition Height="10" />
-            <!-- Spacer -->
             <RowDefinition Height="Auto" />
-            <!-- Sign Up Button -->
         </Grid.RowDefinitions>
 
         <!-- Label for Username -->
@@ -43,5 +76,4 @@
         <!-- Sign Up Button -->
         <Button Content="Sign Up" Grid.Row="8" Width="100" HorizontalAlignment="Center" VerticalAlignment="Center" Click="SignUpButton_Click" />
     </Grid>
-
 </Window>

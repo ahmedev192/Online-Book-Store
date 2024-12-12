@@ -6,12 +6,42 @@
         xmlns:local="clr-namespace:OnlineBookStore.Views"
         mc:Ignorable="d"
         Title="Customer Dashboard" Height="450" Width="600">
-    <Grid>
-        <Button Content="Browse Books" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,30,0,0" Click="BrowseBooksButton_Click" />
-        <Button Content="View Cart" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,90,0,0" Click="ViewCartButton_Click" />
-        <Button Content="Track Orders" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,150,0,0" Click="TrackOrderButton_Click" />
-        <Button Content="Manage Account" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,210,0,0" Click="ManageAccountButton_Click" />
-        <Button Content="Log Out" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,270,0,20" Click="LogOutButton_Click" />
 
+    <!-- Add a resource dictionary for styling -->
+    <Window.Resources>
+        <!-- Style for Buttons -->
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="200" />
+            <Setter Property="Height" Value="50" />
+            <Setter Property="Margin" Value="0,15,0,0" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Background" Value="#007ACC" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <!-- Browse Books Button -->
+        <Button Content="Browse Books" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,30,0,0" Click="BrowseBooksButton_Click" />
+
+        <!-- View Cart Button -->
+        <Button Content="View Cart" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,90,0,0" Click="ViewCartButton_Click" />
+
+        <!-- Track Orders Button -->
+        <Button Content="Track Orders" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,150,0,0" Click="TrackOrderButton_Click" />
+
+        <!-- Manage Account Button -->
+        <Button Content="Manage Account" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,210,0,0" Click="ManageAccountButton_Click" />
+
+        <!-- Log Out Button -->
+        <Button Content="Log Out" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,270,0,20" Click="LogOutButton_Click" />
     </Grid>
 </Window>

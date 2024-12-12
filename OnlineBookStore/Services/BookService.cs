@@ -1,4 +1,5 @@
-﻿using OnlineBookStore.Database;
+﻿using Microsoft.EntityFrameworkCore;
+using OnlineBookStore.Database;
 using OnlineBookStore.Models;
 using OnlineBookStore.Utilities;
 using System;
@@ -86,7 +87,9 @@ namespace OnlineBookStore.Services
 
         public List<Book> SearchFilterAndSortBooks(string? searchQuery, string? category, ISortingStrategy? sortingStrategy)
         {
-            var allBooks = _context.Books.ToList();
+            var allBooks = _context.Books
+                .Include(b => b.Category) // This includes the related Category for each Book
+                .ToList();
             var compositeOperation = new CompositeBookOperation();
 
             if (!string.IsNullOrEmpty(searchQuery))

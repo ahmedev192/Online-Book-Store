@@ -332,7 +332,7 @@ namespace OnlineBookStore.Migrations
                     b.HasOne("OnlineBookStore.Models.Book", "Book")
                         .WithMany("OrderBooks")
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlineBookStore.Models.Order", "Order")

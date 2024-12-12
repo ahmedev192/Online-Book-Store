@@ -25,14 +25,13 @@ namespace OnlineBookStore.Models
         public string Edition { get; set; }
 
         [StringLength(500)]
-        public string CoverImage { get; set; } // Path or URL to the cover image
+        public string CoverImage { get; set; } 
 
         public int CategoryId { get; set; }
         public Category Category { get; set; }
 
-        public double Popularity { get; set; } // Calculated from sales and reviews
+        public double Popularity { get; set; } 
 
-        // Navigation property to represent the reviews for this book
         public List<Review> Reviews { get; set; } = new List<Review>();
 
         public List<OrderBook> OrderBooks { get; set; } = new List<OrderBook>();

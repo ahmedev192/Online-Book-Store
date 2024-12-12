@@ -17,7 +17,7 @@ namespace OnlineBookStore.Views
         {
             InitializeComponent();
             _categoryService = new CategoryService();
-
+            _bookService = new BookService();
             // Load categories into the ComboBox
             CategoryComboBox.ItemsSource = _categoryService.GetCategories();
         }
