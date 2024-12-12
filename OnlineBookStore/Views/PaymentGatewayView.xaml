@@ -1,0 +1,21 @@
+﻿<Window x:Class="OnlineBookStore.Views.PaymentGatewayView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Payment Gateway" Height="300" Width="500">
+    <Grid Margin="10">
+        <!-- Header -->
+        <Label Content="Select Payment Method" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center" />
+
+        <!-- Payment Method Options -->
+        <RadioButton x:Name="CreditCardRadio" Content="Credit Card" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,50,0,0"/>
+        <RadioButton x:Name="PayPalRadio" Content="PayPal" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,80,0,0"/>
+        <RadioButton x:Name="CODRadio" Content="Cash on Delivery" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,110,0,0"/>
+
+        <!-- Total Amount -->
+        <TextBlock Text="Total Amount:" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,50,10,0"/>
+        <TextBlock x:Name="TotalAmountText" FontSize="16" FontWeight="Bold" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,80,10,0"/>
+
+        <!-- Proceed Button -->
+        <Button Content="Proceed" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,10,10" Click="Proceed_Click" />
+    </Grid>
+</Window>

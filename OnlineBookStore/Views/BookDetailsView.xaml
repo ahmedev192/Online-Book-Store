@@ -1,0 +1,61 @@
+﻿<Window x:Class="OnlineBookStore.Views.BookDetailsView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Book Details" Height="1000" Width="800">
+    <Grid Margin="10">
+        <StackPanel>
+            <!-- Book Image and Information -->
+            <Image Name="BookImage" Height="300" Width="200" HorizontalAlignment="Center" Margin="10"/>
+            <TextBlock Name="BookTitle" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" Margin="10"/>
+            <TextBlock Name="BookAuthor" FontSize="16" HorizontalAlignment="Center" Margin="5"/>
+
+            <!-- Reviews Section -->
+            <TextBlock FontSize="16" FontWeight="Bold" Text="Customer Reviews" Margin="10"/>
+
+            <!-- Reviews List with ScrollViewer -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Height="200" Margin="10">
+                <ListBox Name="ReviewsList">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <!-- Customer Name Label and Value -->
+                                <TextBlock Text="Customer Name:" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Customer.Username}" Margin="0,5,0,10"/>
+
+                                <!-- Review Text Label and Value -->
+                                <TextBlock Text="Review Text:" FontWeight="Bold" />
+                                <TextBlock Text="{Binding ReviewText}" Margin="0,5,0,10"/>
+
+                                <!-- Rating Label and Value -->
+                                <TextBlock Text="Rating:" FontWeight="Bold" />
+                                <TextBlock Text="{Binding Rating}" Margin="0,5,0,10"/>
+
+                                <!-- Review Date Label and Value -->
+                                <TextBlock Text="Review Date:" FontWeight="Bold" />
+                                <TextBlock Text="{Binding ReviewDate}" Margin="0,5,0,10"/>
+                                
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+
+            <!-- Review Input (Only for purchased books) -->
+            <StackPanel Name="ReviewInputPanel" Orientation="Vertical" Visibility="Collapsed" Margin="10">
+                <TextBlock FontSize="14" Text="Leave a Review" />
+                <TextBox Name="ReviewTextBox" Height="100" Width="300" Margin="5"/>
+
+                <!-- Rating ComboBox -->
+                <ComboBox Name="RatingComboBox" Width="100" Margin="5">
+                    <ComboBoxItem Content="1" />
+                    <ComboBoxItem Content="2" />
+                    <ComboBoxItem Content="3" />
+                    <ComboBoxItem Content="4" />
+                    <ComboBoxItem Content="5" />
+                </ComboBox>
+
+                <Button Content="Submit Review" Width="100" Margin="5" Click="SubmitReview_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

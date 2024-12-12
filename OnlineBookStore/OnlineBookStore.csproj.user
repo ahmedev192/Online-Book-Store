@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup />
+  <ItemGroup>
+    <ApplicationDefinition Update="App.xaml">
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Views\AccountManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AddBookView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\AdminDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\BookDetailsView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\BooksView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\CartView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\CategoryManagementView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\CustomerDashboardView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\EditBookView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ManageBooksView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\ManageOrdersView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OrderConfirmationView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\OrderStatusTrackingView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\PaymentGatewayView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SignUpView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\StatisticsMonitoringView.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AccountManagementView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AddBookView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\AdminDashboardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\BookDetailsView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\BooksView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CartView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CategoryManagementView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\CustomerDashboardView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\EditBookView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ManageBooksView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\ManageOrdersView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OrderConfirmationView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\OrderStatusTrackingView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\PaymentGatewayView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SignUpView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\StatisticsMonitoringView.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+</Project>

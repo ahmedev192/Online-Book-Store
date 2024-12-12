@@ -1,0 +1,17 @@
+﻿<Window x:Class="OnlineBookStore.Views.CustomerDashboardView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OnlineBookStore.Views"
+        mc:Ignorable="d"
+        Title="Customer Dashboard" Height="450" Width="600">
+    <Grid>
+        <Button Content="Browse Books" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,30,0,0" Click="BrowseBooksButton_Click" />
+        <Button Content="View Cart" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,90,0,0" Click="ViewCartButton_Click" />
+        <Button Content="Track Orders" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,150,0,0" Click="TrackOrderButton_Click" />
+        <Button Content="Manage Account" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,210,0,0" Click="ManageAccountButton_Click" />
+        <Button Content="Log Out" Width="200" Height="50" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="0,270,0,20" Click="LogOutButton_Click" />
+
+    </Grid>
+</Window>
