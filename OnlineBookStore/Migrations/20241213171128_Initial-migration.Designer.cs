@@ -12,8 +12,8 @@ using OnlineBookStore.Database;
 namespace OnlineBookStore.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20241212140251_orderbookid")]
-    partial class orderbookid
+    [Migration("20241213171128_Initial-migration")]
+    partial class Initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -335,7 +335,7 @@ namespace OnlineBookStore.Migrations
                     b.HasOne("OnlineBookStore.Models.Book", "Book")
                         .WithMany("OrderBooks")
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlineBookStore.Models.Order", "Order")
