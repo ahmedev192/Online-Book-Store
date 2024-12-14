@@ -24,7 +24,7 @@ namespace OnlineBookStore.Services
         {
             var order = new Order
             {
-                CustomerId = customerId,
+                UserId = customerId,
                 OrderDate = DateTime.Now,
                 Status = "Pending",
                 OrderBooks = books.Select(book => new OrderBook { BookId = book.BookId }).ToList()
@@ -46,7 +46,7 @@ namespace OnlineBookStore.Services
 
             if (updated)
             {
-                _notificationService.NotifyCustomer(order.CustomerId, $"Order #{orderId} has been canceled.");
+                _notificationService.NotifyCustomer(order.UserId, $"Order #{orderId} has been canceled.");
             }
 
             return updated;
@@ -65,7 +65,7 @@ namespace OnlineBookStore.Services
 
             if (updated)
             {
-                _notificationService.NotifyCustomer(order.CustomerId, $"Your order #{orderId} has been confirmed!");
+                _notificationService.NotifyCustomer(order.UserId, $"Your order #{orderId} has been confirmed!");
             }
 
             return updated;

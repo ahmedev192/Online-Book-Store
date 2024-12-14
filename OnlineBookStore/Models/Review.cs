@@ -12,16 +12,19 @@ namespace OnlineBookStore.Models
     {
         [Key]
         public int ReviewId { get; set; }
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } 
+
         [ForeignKey("Book")]
         public int BookId { get; set; }
         public Book Book { get; set; }
         public string ReviewText { get; set; }
-        public int Rating { get; set; } // Rating out of 5
+        public int Rating { get; set; } 
         public DateTime ReviewDate { get; set; }
     }
+
 
 
 }

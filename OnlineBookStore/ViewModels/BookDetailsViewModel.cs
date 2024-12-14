@@ -44,7 +44,7 @@ namespace OnlineBookStore.ViewModels
                     BookId = bookId,
                     ReviewText = reviewText,
                     Rating = rating,
-                    CustomerId = UserSession.Instance.UserId,  // Current user ID
+                    UserId = UserSession.Instance.UserId,  // Current user ID
                     ReviewDate = System.DateTime.Now
                 };
 

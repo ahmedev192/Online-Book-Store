@@ -20,7 +20,7 @@ namespace OnlineBookStore.Repository
 
         public Cart GetCartByCustomerId(int customerId)
         {
-            return _context.Carts.Include(c => c.Books).SingleOrDefault(c => c.CustomerId == customerId);
+            return _context.Carts.Include(c => c.Books).SingleOrDefault(c => c.UserId == customerId);
         }
 
         public void Save(Cart cart)

@@ -21,6 +21,10 @@ namespace OnlineBookStore.Models
         public string Address { get; set; }
         [StringLength(20)]
         public string Phone { get; set; }
+
+        // Add navigation properties
+        public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+        public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
     }
 
 

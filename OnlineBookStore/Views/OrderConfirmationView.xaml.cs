@@ -29,8 +29,8 @@ namespace OnlineBookStore.Views
             {
                 OrderBooksGrid.ItemsSource = cart.Books;
                 TotalPriceText.Text = cart.Books.Sum(b => b.Price).ToString("C");
-                ShippingAddressTextBox.Text = cart.Customer.Address;
-                ShippingPhoneTextBox.Text = cart.Customer.Phone;
+                ShippingAddressTextBox.Text = cart.User.Address;
+                ShippingPhoneTextBox.Text = cart.User.Phone;
             }
         }
 

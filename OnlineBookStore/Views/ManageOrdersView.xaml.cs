@@ -23,7 +23,7 @@ namespace OnlineBookStore.Views
                 .Select(o => new
                 {
                     o.OrderId,
-                    o.CustomerId,
+                    o.UserId,
                     o.Status,
                     OrderDate = o.OrderDate.ToString("yyyy-MM-dd HH:mm:ss"),
                 })

@@ -1,10 +1,7 @@
 ﻿using OnlineBookStore.Database;
 using OnlineBookStore.Models;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineBookStore.Repository
 {
@@ -12,38 +9,52 @@ namespace OnlineBookStore.Repository
     {
         private readonly DatabaseContext _context;
 
-        public EFUserRepository( )
+        public EFUserRepository()
         {
             _context = DatabaseConnection.Instance.Context;
         }
 
-        public User GetUserById(int userId) =>
-            (User)_context.Customers.FirstOrDefault(c => c.UserId == userId) ??
-            _context.Admins.FirstOrDefault(a => a.UserId == userId);
+        // Retrieve a user by ID and cast based on their role
+        public User GetUserById(int userId)
+        {
+            return _context.Users.FirstOrDefault(u => u.UserId == userId);
+        }
 
-        public User GetUserByUsernameAndPassword(string username, string password) =>
-            (User)_context.Customers.SingleOrDefault(u => u.Username == username && u.Password == password) ??
-            _context.Admins.SingleOrDefault(u => u.Username == username && u.Password == password);
+        // Retrieve a user by username and password, cast to appropriate role
+        public User GetUserByUsernameAndPassword(string username, string password)
+        {
+            return _context.Users.SingleOrDefault(u => u.Username == username && u.Password == password);
+        }
 
+        // Check if a username exists
+        public bool UsernameExists(string username)
+        {
+            return _context.Users.Any(u => u.Username == username);
+        }
 
-        public bool UsernameExists(string username) =>
-            _context.Customers.Any(u => u.Username == username) ||
-            _context.Admins.Any(u => u.Username == username);
-
+        // Add a new user (admin or customer)
         public void AddUser(User user)
         {
-            if (user is Customer customer)
-                _context.Customers.Add(customer);
-            else if (user is Admin admin)
-                _context.Admins.Add(admin);
+            _context.Users.Add(user);
         }
 
+        // Update an existing user
         public void UpdateUser(User user)
         {
-            _context.Update(user); // EF Core tracks changes
+            _context.Users.Update(user); // EF Core tracks changes
         }
 
-        public void SaveChanges() => _context.SaveChanges();
-    }
+        // Save changes to the database
+        public void SaveChanges()
+        {
+            _context.SaveChanges();
+        }
 
+        // Additional method to check user role
+        public string GetUserRole(int userId)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            return user is not null ? (user is Admin ? "Admin" : "Customer") : null;
+        }
+    }
 }

@@ -19,7 +19,7 @@ namespace OnlineBookStore.Services
         {
             return _cartRepository.GetCartByCustomerId(customerId) ?? new Cart
             {
-                CustomerId = customerId,
+                UserId = customerId,
                 Books = new List<Book>()
             };
         }

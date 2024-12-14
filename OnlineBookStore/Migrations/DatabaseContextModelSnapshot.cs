@@ -30,9 +30,6 @@ namespace OnlineBookStore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookId"));
 
-                    b.Property<int?>("AdminUserId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Author")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -70,8 +67,6 @@ namespace OnlineBookStore.Migrations
 
                     b.HasKey("BookId");
 
-                    b.HasIndex("AdminUserId");
-
                     b.HasIndex("CartId");
 
                     b.HasIndex("CategoryId");
@@ -87,12 +82,12 @@ namespace OnlineBookStore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
 
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("CartId");
 
-                    b.HasIndex("CustomerId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("Carts");
@@ -147,9 +142,6 @@ namespace OnlineBookStore.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
@@ -157,9 +149,12 @@ namespace OnlineBookStore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -198,9 +193,6 @@ namespace OnlineBookStore.Migrations
                     b.Property<int>("BookId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -211,11 +203,14 @@ namespace OnlineBookStore.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("ReviewId");
 
                     b.HasIndex("BookId");
 
-                    b.HasIndex("CustomerId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Reviews");
                 });
@@ -243,6 +238,11 @@ namespace OnlineBookStore.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
+
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -250,31 +250,29 @@ namespace OnlineBookStore.Migrations
 
                     b.HasKey("UserId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Role").HasValue("User");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
                 {
                     b.HasBaseType("OnlineBookStore.Models.User");
 
-                    b.ToTable("Admins", (string)null);
+                    b.HasDiscriminator().HasValue("Admin");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
                 {
                     b.HasBaseType("OnlineBookStore.Models.User");
 
-                    b.ToTable("Customers", (string)null);
+                    b.HasDiscriminator().HasValue("Customer");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Book", b =>
                 {
-                    b.HasOne("OnlineBookStore.Models.Admin", null)
-                        .WithMany("ManagedBooks")
-                        .HasForeignKey("AdminUserId");
-
                     b.HasOne("OnlineBookStore.Models.Cart", null)
                         .WithMany("Books")
                         .HasForeignKey("CartId");
@@ -290,24 +288,24 @@ namespace OnlineBookStore.Migrations
 
             modelBuilder.Entity("OnlineBookStore.Models.Cart", b =>
                 {
-                    b.HasOne("OnlineBookStore.Models.Customer", "Customer")
+                    b.HasOne("OnlineBookStore.Models.User", "User")
                         .WithOne()
-                        .HasForeignKey("OnlineBookStore.Models.Cart", "CustomerId")
+                        .HasForeignKey("OnlineBookStore.Models.Cart", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Order", b =>
                 {
-                    b.HasOne("OnlineBookStore.Models.Customer", "Customer")
+                    b.HasOne("OnlineBookStore.Models.User", "User")
                         .WithMany("Orders")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Customer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.OrderBook", b =>
@@ -337,33 +335,15 @@ namespace OnlineBookStore.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OnlineBookStore.Models.Customer", "Customer")
+                    b.HasOne("OnlineBookStore.Models.User", "User")
                         .WithMany("Reviews")
-                        .HasForeignKey("CustomerId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Book");
 
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
-                {
-                    b.HasOne("OnlineBookStore.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("OnlineBookStore.Models.Admin", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
-                {
-                    b.HasOne("OnlineBookStore.Models.User", null)
-                        .WithOne()
-                        .HasForeignKey("OnlineBookStore.Models.Customer", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Book", b =>
@@ -388,12 +368,7 @@ namespace OnlineBookStore.Migrations
                     b.Navigation("OrderBooks");
                 });
 
-            modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
-                {
-                    b.Navigation("ManagedBooks");
-                });
-
-            modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
+            modelBuilder.Entity("OnlineBookStore.Models.User", b =>
                 {
                     b.Navigation("Orders");
 

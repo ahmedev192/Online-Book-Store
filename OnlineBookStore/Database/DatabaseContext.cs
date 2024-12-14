@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using OnlineBookStore.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace OnlineBookStore.Database
 {
     public class DatabaseContext : DbContext
     {
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<Notification> Notifications { get; set; }
-
-        public DbSet<Admin> Admins { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Order> Orders { get; set; }
@@ -17,10 +17,8 @@ namespace OnlineBookStore.Database
         public DbSet<Review> Reviews { get; set; }
         public DbSet<OrderBook> OrderBooks { get; set; }
 
-        // Constructor to accept DbContextOptions
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        // Configures the connection string
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -29,45 +27,48 @@ namespace OnlineBookStore.Database
             }
         }
 
-        // Configures relationships and model constraints
-
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure Book-Category relationship
+            // Role-based user configuration
+            modelBuilder.Entity<User>()
+                .HasDiscriminator<string>("Role")
+                .HasValue<Admin>("Admin")
+                .HasValue<Customer>("Customer");
+
+            // Book-Category relationship
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Category)
                 .WithMany(c => c.Books)
                 .HasForeignKey(b => b.CategoryId);
 
-            // Configure Order-Customer relationship
+            // Order-User relationship
             modelBuilder.Entity<Order>()
-                .HasOne(o => o.Customer)
-                .WithMany(c => c.Orders)
-                .HasForeignKey(o => o.CustomerId);
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
 
-            // Configure Cart-Customer relationship
+            // Cart-User relationship
             modelBuilder.Entity<Cart>()
-                .HasOne(c => c.Customer)
+                .HasOne(c => c.User)
                 .WithOne()
-                .HasForeignKey<Cart>(c => c.CustomerId);
+                .HasForeignKey<Cart>(c => c.UserId);
 
-            // Configure Review relationships
+            // Review relationships
             modelBuilder.Entity<Review>()
-                .HasOne(r => r.Customer)
-                .WithMany(c => c.Reviews)
-                .HasForeignKey(r => r.CustomerId)
-                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete on Customer
+                .HasOne(r => r.User)
+                .WithMany(u => u.Reviews)
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Book)
                 .WithMany(b => b.Reviews)
                 .HasForeignKey(r => r.BookId)
-                .OnDelete(DeleteBehavior.Cascade); // Allow cascade delete on Book
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Configure OrderBook relationships
+            // OrderBook relationships
             modelBuilder.Entity<OrderBook>()
                 .HasKey(ob => ob.OrderBookId);
 
@@ -75,32 +76,15 @@ namespace OnlineBookStore.Database
                 .HasOne(ob => ob.Order)
                 .WithMany(o => o.OrderBooks)
                 .HasForeignKey(ob => ob.OrderId)
-                .OnDelete(DeleteBehavior.Cascade); // Cascade delete from Order to OrderBook
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<OrderBook>()
                 .HasOne(ob => ob.Book)
                 .WithMany(b => b.OrderBooks)
                 .HasForeignKey(ob => ob.BookId)
-                .OnDelete(DeleteBehavior.Restrict); // Restrict delete from Book to OrderBook
-
-            // Configure Admin and Customer inheritance
-            modelBuilder.Entity<Admin>().ToTable("Admins");
-            modelBuilder.Entity<Customer>().ToTable("Customers");
-            modelBuilder.Entity<User>().ToTable("Users");
+                .OnDelete(DeleteBehavior.Restrict);
         }
-
-
-
-
-
     }
-
-
-
-
-
-
-
 
     public class DatabaseContextFactory : IDesignTimeDbContextFactory<DatabaseContext>
     {
@@ -112,4 +96,5 @@ namespace OnlineBookStore.Database
             return new DatabaseContext(optionsBuilder.Options);
         }
     }
+
 }

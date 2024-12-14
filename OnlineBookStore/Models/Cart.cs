@@ -12,14 +12,16 @@ namespace OnlineBookStore.Models
     {
         [Key]
         public int CartId { get; set; }
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } 
+
         public virtual List<Book> Books { get; set; } = new List<Book>();
 
         [NotMapped]
         public decimal TotalAmount => Books.Sum(b => b.Price);
-
     }
+
 
 }

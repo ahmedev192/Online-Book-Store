@@ -32,13 +32,13 @@ namespace OnlineBookStore.Repository
 
         public List<Order> GetOrdersByCustomerId(int customerId)
         {
-            return _context.Orders.Where(o => o.CustomerId == customerId).ToList();
+            return _context.Orders.Where(o => o.UserId == customerId).ToList();
         }
 
         public bool HasCustomerPurchasedBook(int customerId, int bookId)
         {
             return _context.Orders
-                .Where(o => o.CustomerId == customerId)
+                .Where(o => o.UserId == customerId)
                 .Any(o => o.OrderBooks.Any(ob => ob.BookId == bookId));
         }
 

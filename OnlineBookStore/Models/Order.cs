@@ -12,15 +12,18 @@ namespace OnlineBookStore.Models
     {
         [Key]
         public int OrderId { get; set; }
-        [ForeignKey("Customer")]
-        public int CustomerId { get; set; }
-        public Customer Customer { get; set; }
+
+        [ForeignKey("User")]
+        public int UserId { get; set; }
+        public User User { get; set; } 
+
         public List<OrderBook> OrderBooks { get; set; } = new List<OrderBook>();
         public DateTime OrderDate { get; set; }
-        public string Status { get; set; } // e.g., Pending, Confirmed, Shipped, Canceled
+        public string Status { get; set; }
 
         [NotMapped]
         public decimal TotalAmount => OrderBooks.Sum(b => b.Book.Price);
     }
+
 
 }
