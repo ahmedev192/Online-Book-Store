@@ -21,13 +21,13 @@
             <!-- Top-Selling Books Chart -->
             <StackPanel Grid.Column="0" Margin="10">
                 <TextBlock Text="Top-Selling Books" FontSize="16" FontWeight="Bold" Margin="5"/>
-                <lvc:CartesianChart Name="TopSellingBooksChart" Margin="5" />
+                <lvc:CartesianChart Name="TopSellingBooksChart" Margin="5" Height="300" />
             </StackPanel>
 
             <!-- Popular Categories Chart -->
             <StackPanel Grid.Column="1" Margin="10">
                 <TextBlock Text="Popular Categories" FontSize="16" FontWeight="Bold" Margin="5"/>
-                <lvc:CartesianChart Name="PopularCategoriesChart" Margin="5" />
+                <lvc:CartesianChart Name="PopularCategoriesChart" Margin="5" Height="300" />
             </StackPanel>
         </Grid>
     </Grid>
