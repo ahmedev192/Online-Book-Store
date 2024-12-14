@@ -9,14 +9,14 @@ namespace OnlineBookStore.ViewModels
     public class BookDetailsViewModel
     {
         private readonly BookService _bookService;
-        private readonly OrderService _orderService;
+        private readonly OrderManagementService _orderManagementService;
         private readonly ReviewService _reviewService;
 
         public BookDetailsViewModel()
         {
             _bookService = new BookService();
-            _orderService = new OrderService();
             _reviewService = new ReviewService();
+            _orderManagementService = new OrderManagementService();
         }
 
         public Book Book { get; private set; }
@@ -31,7 +31,7 @@ namespace OnlineBookStore.ViewModels
             Reviews = _reviewService.GetBookReviews(bookId);
 
             // Check if the user has purchased this book
-            CanLeaveReview = _orderService.HasPurchasedBook(UserSession.Instance.UserId, bookId);
+            CanLeaveReview = _orderManagementService.HasPurchasedBook(UserSession.Instance.UserId, bookId);
         }
 
         public void SubmitReview(int bookId, string reviewText, int rating)

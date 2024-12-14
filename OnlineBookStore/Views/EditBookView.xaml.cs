@@ -38,11 +38,10 @@ namespace OnlineBookStore.Views
         {
             try
             {
-                // Fetch categories from the service
                 var categories = _categoryService.GetCategories();
                 CategoryComboBox.ItemsSource = categories;
-                CategoryComboBox.DisplayMemberPath = "Name"; // Assuming Category has a Name property
-                CategoryComboBox.SelectedItem = _book.Category; // Select the current category of the book
+                CategoryComboBox.DisplayMemberPath = "Name"; 
+                CategoryComboBox.SelectedItem = _book.Category; 
             }
             catch (Exception ex)
             {
@@ -84,14 +83,10 @@ namespace OnlineBookStore.Views
 
             if (fileDialog.ShowDialog() == true)
             {
-                // Save the selected image to a specific location
-                var imageBytes = System.IO.File.ReadAllBytes(fileDialog.FileName);
-                var savedPath = FileHelper.SaveImage( imageBytes);
 
-                // Update the text box with the image path
-                if (!string.IsNullOrEmpty(savedPath))
+                if (!string.IsNullOrEmpty(fileDialog.FileName))
                 {
-                    CoverImageTextBox.Text = savedPath;
+                    CoverImageTextBox.Text = fileDialog.FileName;
                 }
                 else
                 {

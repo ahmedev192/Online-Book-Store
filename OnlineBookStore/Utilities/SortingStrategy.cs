@@ -2,8 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineBookStore.Utilities
 {
@@ -27,19 +25,23 @@ namespace OnlineBookStore.Utilities
         public List<Book> Sort(List<Book> books) => books.OrderBy(b => b.Title).ToList();
     }
 
-    // Context to use the sorting strategies
     public class BookSorter
     {
         private ISortingStrategy _strategy;
 
+        public BookSorter(ISortingStrategy strategy = null)
+        {
+            _strategy = strategy ?? new SortByPrice(); // Default strategy
+        }
+
         public void SetStrategy(ISortingStrategy strategy)
         {
-            _strategy = strategy;
+            _strategy = strategy ?? throw new ArgumentNullException(nameof(strategy), "Strategy cannot be null.");
         }
 
         public List<Book> SortBooks(List<Book> books)
         {
-            if (_strategy == null) throw new InvalidOperationException("Sorting strategy is not set.");
+            if (books == null) throw new ArgumentNullException(nameof(books), "Books list cannot be null.");
             return _strategy.Sort(books);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using OnlineBookStore.Database;
 using OnlineBookStore.Models;
+using OnlineBookStore.Repository;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,21 +8,26 @@ namespace OnlineBookStore.Services
 {
     public class CartService
     {
-        private readonly DatabaseContext _context;
+        private readonly ICartRepository _cartRepository;
 
-        public CartService()
+        public CartService( )
         {
-            _context = DatabaseConnection.Instance.Context;
+            _cartRepository = new CartRepository();
         }
 
         public Cart GetCartByCustomerId(int customerId)
         {
-            return _context.Carts.SingleOrDefault(c => c.CustomerId == customerId);
+            return _cartRepository.GetCartByCustomerId(customerId) ?? new Cart
+            {
+                CustomerId = customerId,
+                Books = new List<Book>()
+            };
         }
 
-        public void SaveChanges()
+        public void SaveCart(Cart cart)
         {
-            _context.SaveChanges();
+            _cartRepository.Save(cart);
         }
     }
+
 }

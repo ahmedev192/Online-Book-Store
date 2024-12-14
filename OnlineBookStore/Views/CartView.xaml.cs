@@ -84,7 +84,7 @@ namespace OnlineBookStore.Views
 
                 if (book != null)
                 {
-                    var removeFromCartCommand = new RemoveFromCartCommand(_cartService, UserSession.Instance.UserId, book);
+                    var removeFromCartCommand = new RemoveFromCartCommand(_cartService, UserSession.Instance.UserId, book.BookId);
                     removeFromCartCommand.Execute(); // Execute the command to remove the book from the cart
 
                     cartItem.Quantity--;
@@ -109,7 +109,7 @@ namespace OnlineBookStore.Views
                 {
                     foreach (var book in booksToRemove)
                     {
-                    var removeFromCartCommand = new RemoveFromCartCommand(_cartService, UserSession.Instance.UserId, book);
+                    var removeFromCartCommand = new RemoveFromCartCommand(_cartService, UserSession.Instance.UserId, book.BookId);
                     removeFromCartCommand.Execute(); // Execute the command to remove the book from the cart
                     }
 

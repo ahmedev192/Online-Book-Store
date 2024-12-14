@@ -19,7 +19,19 @@ namespace OnlineBookStore.Views
             _categoryService = new CategoryService();
             _bookService = new BookService();
             // Load categories into the ComboBox
-            CategoryComboBox.ItemsSource = _categoryService.GetCategories();
+            LoadCategories();
+        }
+
+        private void LoadCategories()
+        {
+            try
+            {
+                CategoryComboBox.ItemsSource = _categoryService.GetCategories();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading categories: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void BrowseImageButton_Click(object sender, RoutedEventArgs e)
@@ -54,14 +66,6 @@ namespace OnlineBookStore.Views
                     Directory.CreateDirectory("Images");
                 }
 
-                byte[] imageBytes = FileHelper.LoadImage(imageFilePath);
-                string savedPath = FileHelper.SaveImage( imageBytes);
-
-                if (savedPath == null)
-                {
-                    MessageBox.Show("Failed to save the image.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
 
                 // Create and populate the Book object
                 var book = new Book
@@ -71,7 +75,7 @@ namespace OnlineBookStore.Views
                     Price = decimal.Parse(PriceTextBox.Text),
                     Stock = int.Parse(StockTextBox.Text),
                     Edition = EditionTextBox.Text,
-                    CoverImage = savedPath,
+                    CoverImage = imageFilePath,
                     CategoryId = ((Category)CategoryComboBox.SelectedItem).CategoryId
                 };
 

@@ -22,39 +22,6 @@ namespace OnlineBookStore.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Admins");
-                });
-
             modelBuilder.Entity("OnlineBookStore.Models.Book", b =>
                 {
                     b.Property<int>("BookId")
@@ -147,39 +114,6 @@ namespace OnlineBookStore.Migrations
                     b.HasKey("CategoryId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
-                {
-                    b.Property<int>("UserId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("UserId");
-
-                    b.ToTable("Customers");
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Notification", b =>
@@ -286,6 +220,55 @@ namespace OnlineBookStore.Migrations
                     b.ToTable("Reviews");
                 });
 
+            modelBuilder.Entity("OnlineBookStore.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
+                {
+                    b.HasBaseType("OnlineBookStore.Models.User");
+
+                    b.ToTable("Admins", (string)null);
+                });
+
+            modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
+                {
+                    b.HasBaseType("OnlineBookStore.Models.User");
+
+                    b.ToTable("Customers", (string)null);
+                });
+
             modelBuilder.Entity("OnlineBookStore.Models.Book", b =>
                 {
                     b.HasOne("OnlineBookStore.Models.Admin", null)
@@ -332,7 +315,7 @@ namespace OnlineBookStore.Migrations
                     b.HasOne("OnlineBookStore.Models.Book", "Book")
                         .WithMany("OrderBooks")
                         .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("OnlineBookStore.Models.Order", "Order")
@@ -357,7 +340,7 @@ namespace OnlineBookStore.Migrations
                     b.HasOne("OnlineBookStore.Models.Customer", "Customer")
                         .WithMany("Reviews")
                         .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Book");
@@ -367,7 +350,20 @@ namespace OnlineBookStore.Migrations
 
             modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
                 {
-                    b.Navigation("ManagedBooks");
+                    b.HasOne("OnlineBookStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("OnlineBookStore.Models.Admin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
+                {
+                    b.HasOne("OnlineBookStore.Models.User", null)
+                        .WithOne()
+                        .HasForeignKey("OnlineBookStore.Models.Customer", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("OnlineBookStore.Models.Book", b =>
@@ -387,16 +383,21 @@ namespace OnlineBookStore.Migrations
                     b.Navigation("Books");
                 });
 
+            modelBuilder.Entity("OnlineBookStore.Models.Order", b =>
+                {
+                    b.Navigation("OrderBooks");
+                });
+
+            modelBuilder.Entity("OnlineBookStore.Models.Admin", b =>
+                {
+                    b.Navigation("ManagedBooks");
+                });
+
             modelBuilder.Entity("OnlineBookStore.Models.Customer", b =>
                 {
                     b.Navigation("Orders");
 
                     b.Navigation("Reviews");
-                });
-
-            modelBuilder.Entity("OnlineBookStore.Models.Order", b =>
-                {
-                    b.Navigation("OrderBooks");
                 });
 #pragma warning restore 612, 618
         }

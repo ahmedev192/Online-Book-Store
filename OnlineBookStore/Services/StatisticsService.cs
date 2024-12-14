@@ -1,36 +1,39 @@
 ﻿using OnlineBookStore.Database;
+using OnlineBookStore.Repository;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OnlineBookStore.Services
 {
-    public class StatisticsService
+    public class StatisticsService : IStatisticsService
     {
-        private readonly DatabaseContext _context;
+        private readonly IStatisticsRepository _statisticsRepository;
 
-        public StatisticsService()
+        public StatisticsService( )
         {
-            _context = DatabaseConnection.Instance.Context;
+            _statisticsRepository = new StatisticsRepository();
         }
 
-        public List<string> GetTopSellingBooks()
+        public List<string> GetTopSellingBooks(int topN = 5)
         {
-            return _context.OrderBooks
-                .GroupBy(ob => ob.Book.Title)
+            var groupedBooks = _statisticsRepository.GetOrderBooksGroupedByBookTitle();
+
+            return groupedBooks
                 .OrderByDescending(g => g.Count())
-                .Take(5)
-                .Select(g => $"{g.Key} ({g.Count()} sales)")
-                .ToList();
-        }
-        public List<string> GetPopularCategories()
-        {
-            return _context.OrderBooks
-                .GroupBy(ob => ob.Book.Category.Name)
-                .OrderByDescending(g => g.Count())
-                .Take(5)
+                .Take(topN)
                 .Select(g => $"{g.Key} ({g.Count()} sales)")
                 .ToList();
         }
 
+        public List<string> GetPopularCategories(int topN = 5)
+        {
+            var groupedCategories = _statisticsRepository.GetOrderBooksGroupedByCategoryName();
+
+            return groupedCategories
+                .OrderByDescending(g => g.Count())
+                .Take(topN)
+                .Select(g => $"{g.Key} ({g.Count()} sales)")
+                .ToList();
+        }
     }
 }

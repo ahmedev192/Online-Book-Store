@@ -1,36 +1,37 @@
 ﻿using OnlineBookStore.Database;
 using OnlineBookStore.Models;
+using OnlineBookStore.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace OnlineBookStore.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private readonly DatabaseContext _context;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public CategoryService()
+        public CategoryService( )
         {
-            _context = DatabaseConnection.Instance.Context;
+            _categoryRepository = new CategoryRepository();
         }
 
         public List<Category> GetCategories()
         {
-            return _context.Categories.ToList();
+            return _categoryRepository.GetAllCategories();
         }
 
-        public bool AddCategory(Category category)
+        public bool AddCategory(string name)
         {
-            _context.Categories.Add(category);
-            _context.SaveChanges();
-            Console.WriteLine($"Category '{category.Name}' added.");
+            var category = new Category { Name = name };
+            _categoryRepository.AddCategory(category);
+            Console.WriteLine($"Category '{name}' added.");
             return true;
         }
 
         public bool EditCategory(int categoryId, string name)
         {
-            var category = _context.Categories.SingleOrDefault(c => c.CategoryId == categoryId);
+            var category = _categoryRepository.GetCategoryById(categoryId);
             if (category == null)
             {
                 Console.WriteLine("Category not found.");
@@ -38,23 +39,21 @@ namespace OnlineBookStore.Services
             }
 
             category.Name = name;
-
-            _context.SaveChanges();
+            _categoryRepository.UpdateCategory(category);
             Console.WriteLine($"Category '{name}' updated.");
             return true;
         }
 
         public bool DeleteCategory(int categoryId)
         {
-            var category = _context.Categories.SingleOrDefault(c => c.CategoryId == categoryId);
+            var category = _categoryRepository.GetCategoryById(categoryId);
             if (category == null)
             {
                 Console.WriteLine("Category not found.");
                 return false;
             }
 
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            _categoryRepository.DeleteCategory(category);
             Console.WriteLine($"Category '{category.Name}' deleted.");
             return true;
         }

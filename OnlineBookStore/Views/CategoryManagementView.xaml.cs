@@ -30,12 +30,9 @@ namespace OnlineBookStore.Views
                 return;
             }
 
-            var newCategory = new Category
-            {
-                Name = name,
-            };
 
-            if (_categoryService.AddCategory(newCategory))
+
+            if (_categoryService.AddCategory(name))
             {
                 MessageBox.Show($"Category '{name}' added successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                 LoadCategories();

@@ -7,12 +7,12 @@ namespace OnlineBookStore
 {
     public partial class MainWindow : Window
     {
-        private readonly AuthenticationService _authService;
+        private readonly UserManagementService _userService;
 
         public MainWindow()
         {
             InitializeComponent();
-            _authService = new AuthenticationService();
+            _userService = new UserManagementService();
         }
 
         private void LoginButton_Click(object sender, RoutedEventArgs e)
@@ -20,7 +20,7 @@ namespace OnlineBookStore
             var username = UsernameTextBox.Text;
             var password = PasswordBox.Password;
 
-            var user = _authService.LogIn(username, password);
+            var user = _userService.LogIn(username, password);
 
             if (user != null)
             {

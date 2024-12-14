@@ -20,7 +20,7 @@ namespace OnlineBookStore.Utilities
 
         public void Update(string message)
         {
-            Notifications.Add(message); // Store the notification
+            Notifications.Add(message); 
 
         }
 

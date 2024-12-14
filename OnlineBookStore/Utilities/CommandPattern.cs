@@ -29,50 +29,56 @@ namespace OnlineBookStore.Utilities
 
         public void Execute()
         {
-            var cart = _cartService.GetCartByCustomerId(_customerId) ?? new Cart
-            {
-                CustomerId = _customerId,
-                Books = new List<Book>()
-            };
+            var cart = _cartService.GetCartByCustomerId(_customerId);
 
-            cart.Books.Add(_book);
 
-            if (cart.CartId == 0) // New cart
-            {
-                _cartService.GetCartByCustomerId(_customerId)?.Books.Add(_book);
-            }
+                cart.Books.Add(_book);
+                _cartService.SaveCart(cart);
+                Console.WriteLine($"Book '{_book.Title}' added to cart.");
 
-            _cartService.SaveChanges();
-            Console.WriteLine($"Book '{_book.Title}' added to cart.");
         }
     }
+
+
+
+
     public class RemoveFromCartCommand : ICommand
     {
         private readonly CartService _cartService;
         private readonly int _customerId;
-        private readonly Book _book;
+        private readonly int _bookId;
 
-        public RemoveFromCartCommand(CartService cartService, int customerId, Book book)
+        public RemoveFromCartCommand(CartService cartService, int customerId, int bookId)
         {
             _cartService = cartService;
             _customerId = customerId;
-            _book = book;
+            _bookId = bookId;
         }
 
         public void Execute()
         {
             var cart = _cartService.GetCartByCustomerId(_customerId);
 
-            if (cart == null || !cart.Books.Remove(_book))
+            var book = cart.Books.FirstOrDefault(b => b.BookId == _bookId);
+            if (book != null)
             {
-                Console.WriteLine($"Failed to remove book '{_book.Title}' from cart.");
-                return;
+                cart.Books.Remove(book);
+                _cartService.SaveCart(cart);
+                Console.WriteLine($"Book '{book.Title}' removed from cart.");
             }
-
-            _cartService.SaveChanges();
-            Console.WriteLine($"Book '{_book.Title}' removed from cart.");
+            else
+            {
+                Console.WriteLine($"Book with ID '{_bookId}' not found in cart.");
+            }
         }
     }
+
+
+
+
+
+
+
 
 
 
@@ -92,16 +98,18 @@ namespace OnlineBookStore.Utilities
         {
             var cart = _cartService.GetCartByCustomerId(_customerId);
 
-            if (cart == null)
+            if (cart.Books.Any())
+            {
+                cart.Books.Clear();
+                _cartService.SaveCart(cart);
+                Console.WriteLine("Cart cleared.");
+            }
+            else
             {
                 Console.WriteLine("Cart is already empty.");
-                return;
             }
-
-            cart.Books.Clear();
-            _cartService.SaveChanges();
-            Console.WriteLine("Cart cleared.");
         }
     }
+
 
 }

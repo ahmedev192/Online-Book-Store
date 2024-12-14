@@ -15,17 +15,15 @@ using System.Windows.Shapes;
 
 namespace OnlineBookStore.Views
 {
-    /// <summary>
-    /// Interaction logic for SignUpView.xaml
-    /// </summary>
+
     public partial class SignUpView : Window
     {
-        private readonly AuthenticationService _authenticationService;
+        private readonly UserManagementService _userService;
 
         public SignUpView()
         {
             InitializeComponent();
-            _authenticationService = new AuthenticationService();
+            _userService = new UserManagementService();
         }
 
         private void SignUpButton_Click(object sender, RoutedEventArgs e)
@@ -36,13 +34,12 @@ namespace OnlineBookStore.Views
             string phone = Phone.Text;
             string userType = (UserType.SelectedItem as ComboBoxItem)?.Content.ToString();
 
-            if (_authenticationService.SignUp(userType, username, password, address, phone))
+            if (_userService.SignUp(userType, username, password, address, phone))
             {
                 MessageBox.Show("User signed up successfully.");
-                // Open the mainView after sign-up success
                 MainWindow mainView = new MainWindow();
                 mainView.Show();
-                this.Close(); // Close the sign-up window after success
+                this.Close(); 
 
             }
             else

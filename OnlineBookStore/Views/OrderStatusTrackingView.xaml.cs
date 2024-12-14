@@ -1,4 +1,5 @@
 ﻿using OnlineBookStore.Services;
+using OnlineBookStore.Utilities;
 using OnlineBookStore.ViewModels;
 using System.Linq;
 using System.Windows;
@@ -7,12 +8,12 @@ namespace OnlineBookStore.Views
 {
     public partial class OrderStatusTrackingView : Window
     {
-        private readonly OrderService _orderService;
+        private readonly OrderManagementService _orderManagementService;
 
         public OrderStatusTrackingView()
         {
             InitializeComponent();
-            _orderService = new OrderService();
+            _orderManagementService = new OrderManagementService();
             LoadOrders();
         }
 
@@ -20,13 +21,13 @@ namespace OnlineBookStore.Views
         {
             try
             {
-                var orders = _orderService.GetOrderHistory();
+                var orders = _orderManagementService.GetOrderHistory(UserSession.Instance.UserId);
                 OrderListView.ItemsSource = orders.Select(o => new OrderViewModel
                 {
                     OrderId = o.OrderId,
                     OrderDate = o.OrderDate.ToString("yyyy-MM-dd HH:mm:ss"),
                     Status = o.Status,
-                    TotalPrice = _orderService.GetOrderTotalPrice(o.OrderId)
+                    TotalPrice = _orderManagementService.GetOrderTotalPrice(o.OrderId)
                 }).ToList();
             }
             catch
@@ -55,7 +56,7 @@ namespace OnlineBookStore.Views
             var result = MessageBox.Show($"Are you sure you want to cancel order {selectedOrder.OrderId}?", "Confirm Cancellation", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                if (_orderService.CancelOrder(selectedOrder.OrderId))
+                if (_orderManagementService.CancelOrder(selectedOrder.OrderId))
                 {
                     MessageBox.Show($"Order {selectedOrder.OrderId} has been canceled.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
                     LoadOrders(); // Refresh the order list

@@ -15,7 +15,7 @@ namespace OnlineBookStore.Views
             _customerId = customerId;
 
             // Initialize the facade with the required services
-            _checkoutFacade = new CheckoutFacade(new CartService(), new OrderService());
+            _checkoutFacade = new CheckoutFacade();
 
             LoadOrderDetails();
         }

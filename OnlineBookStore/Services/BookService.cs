@@ -1,95 +1,144 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OnlineBookStore.Database;
 using OnlineBookStore.Models;
+using OnlineBookStore.Repository;
 using OnlineBookStore.Utilities;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineBookStore.Services
 {
-    public class BookService
+    public class BookService : IBookService
     {
-        private readonly DatabaseContext _context;
+        private readonly IBookRepository _bookRepository;
 
-        public BookService()
+        public BookService( )
         {
-            _context = DatabaseConnection.Instance.Context;
+            _bookRepository = new BookRepository();
         }
 
         public List<Book> BrowseBooks()
         {
-            return _context.Books.ToList();
+            return _bookRepository.GetAllBooks();
         }
-
 
         public Book GetBookById(int bookId)
         {
-            return _context.Books.FirstOrDefault(b => b.BookId == bookId);
+            return _bookRepository.GetBookById(bookId);
         }
+
         public List<string> GetBookReviews(int bookId)
         {
-            var reviews = _context.Reviews
-                .Where(r => r.BookId == bookId)
-                .Select(r => r.ReviewText)
-                .ToList();
-
-            return reviews;
+            return _bookRepository.GetBookReviews(bookId);
         }
 
         public bool AddBook(Book book)
         {
-            _context.Books.Add(book);
-            _context.SaveChanges();
-            Console.WriteLine($"Book '{book.Title}' added.");
-            return true;
-        }
-
-        public bool EditBook(int bookId, string title, string author, decimal price, int stock, string edition, string coverImage)
-        {
-            var book = _context.Books.SingleOrDefault(b => b.BookId == bookId);
             if (book == null)
             {
-                Console.WriteLine("Book not found.");
+                Console.WriteLine("Book cannot be null.");
                 return false;
             }
 
-            book.Title = title;
-            book.Author = author;
-            book.Price = price;
-            book.Stock = stock;
-            book.Edition = edition;
-            book.CoverImage = coverImage;
+            try
+            {
+                // Save cover image if path is provided
+                if (!string.IsNullOrWhiteSpace(book.CoverImage))
+                {
+                    book.CoverImage = _bookRepository.SaveCoverImage(book.CoverImage);
+                    if (string.IsNullOrEmpty(book.CoverImage))
+                    {
+                        Console.WriteLine("Failed to save cover image.");
+                        return false;
+                    }
+                }
 
-            _context.SaveChanges();
-            Console.WriteLine($"Book '{title}' updated.");
-            return true;
+                // Save the book using the repository
+                _bookRepository.AddBook(book);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error adding book: {ex.Message}");
+                return false;
+            }
         }
+
+
+
+
+
+
+        public bool EditBook(int bookId, string title, string author, decimal price, int stock, string edition, string? newCoverImagePath)
+        {
+            try
+            {
+                // Fetch the book from the repository
+                var book = _bookRepository.GetBookById(bookId);
+                if (book == null)
+                {
+                    Console.WriteLine($"Book with ID {bookId} not found.");
+                    return false;
+                }
+
+                // Update book properties
+                book.Title = title;
+                book.Author = author;
+                book.Price = price;
+                book.Stock = stock;
+                book.Edition = edition;
+
+                // Save the new cover image if provided
+                if (!string.IsNullOrWhiteSpace(newCoverImagePath))
+                {
+                    book.CoverImage = _bookRepository.SaveCoverImage(newCoverImagePath);
+                    if (string.IsNullOrEmpty(book.CoverImage))
+                    {
+                        Console.WriteLine("Failed to save new cover image.");
+                        return false;
+                    }
+                }
+
+                // Update the book in the repository
+                _bookRepository.UpdateBook(book);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error editing book: {ex.Message}");
+                return false;
+            }
+        }
+
+
 
         public bool DeleteBook(int bookId)
         {
-            var book = _context.Books.SingleOrDefault(b => b.BookId == bookId);
+            var book = _bookRepository.GetBookById(bookId);
             if (book == null)
-            {
-                Console.WriteLine("Book not found.");
-                return false;
-            }
+                throw new InvalidOperationException($"Book with ID {bookId} not found.");
 
-            _context.Books.Remove(book);
-            _context.SaveChanges();
-            Console.WriteLine($"Book '{book.Title}' deleted.");
-            return true;
+            _bookRepository.DeleteBook(book);
+            return true; 
         }
 
 
+        public string GetBookCoverImage(int bookId)
+        {
+            var imagePath = _bookRepository.GetBookCoverImagePath(bookId);
+            if (string.IsNullOrEmpty(imagePath))
+                throw new FileNotFoundException("Image not found.");
+            return Convert.ToBase64String(FileHelper.LoadImage(imagePath));
+        }
 
         public List<Book> SearchFilterAndSortBooks(string? searchQuery, string? category, ISortingStrategy? sortingStrategy)
         {
-            var allBooks = _context.Books
-                .Include(b => b.Category) // This includes the related Category for each Book
-                .ToList();
+            var allBooks = _bookRepository.GetAllBooks();
+
             var compositeOperation = new CompositeBookOperation();
 
             if (!string.IsNullOrEmpty(searchQuery))
@@ -103,7 +152,5 @@ namespace OnlineBookStore.Services
 
             return compositeOperation.Execute(allBooks);
         }
-
-
     }
 }

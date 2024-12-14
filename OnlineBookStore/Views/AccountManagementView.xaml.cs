@@ -9,13 +9,13 @@ namespace OnlineBookStore.Views
     /// </summary>
     public partial class AccountManagementView : Window
     {
-        private readonly AuthenticationService _authenticationService;
+        private readonly UserManagementService _userService;
         private readonly int _userId;
 
         public AccountManagementView()
         {
             InitializeComponent();
-            _authenticationService = new AuthenticationService();
+            _userService = new UserManagementService();
             _userId = UserSession.Instance.UserId;
 
             LoadUserData();
@@ -24,7 +24,7 @@ namespace OnlineBookStore.Views
         // Load current user data into the fields
         private void LoadUserData()
         {
-            var user = _authenticationService.GetUserDetails(_userId);
+            var user = _userService.GetUserById(_userId);
             if (user != null)
             {
                 Username.Text = user.Username;
@@ -45,7 +45,7 @@ namespace OnlineBookStore.Views
             string address = Address.Text;
             string phone = Phone.Text;
 
-            if (_authenticationService.UpdateAccountDetails(_userId, username, password, address, phone, "customer"))
+            if (_userService.UpdateAccountDetails(_userId, username, password, address, phone))
             {
                 Message.Text = "Account details updated successfully.";
                 Message.Visibility = Visibility.Visible;

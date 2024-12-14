@@ -10,12 +10,12 @@ namespace OnlineBookStore.Utilities
     public class CheckoutFacade
     {
         private readonly CartService _cartService;
-        private readonly OrderService _orderService;
+        private readonly OrderManagementService _orderManagementService;
 
-        public CheckoutFacade(CartService cartService, OrderService orderService)
+        public CheckoutFacade()
         {
-            _cartService = cartService;
-            _orderService = orderService;
+            _cartService = new CartService();
+            _orderManagementService = new OrderManagementService();
         }
 
         public void Checkout(int customerId)
@@ -27,7 +27,7 @@ namespace OnlineBookStore.Utilities
                 return;
             }
 
-            var order = _orderService.PlaceOrder(customerId, cart.Books);
+            var order = _orderManagementService.PlaceOrder(customerId, cart.Books);
             var clearCartCommand = new ClearCartCommand(_cartService, customerId);
             clearCartCommand.Execute(); // Execute the command to clear the cart
             Console.WriteLine($"Order placed successfully with ID: {order.OrderId}");

@@ -30,59 +30,69 @@ namespace OnlineBookStore.Database
         }
 
         // Configures relationships and model constraints
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configure relationships
+            // Configure Book-Category relationship
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Category)
                 .WithMany(c => c.Books)
                 .HasForeignKey(b => b.CategoryId);
 
+            // Configure Order-Customer relationship
             modelBuilder.Entity<Order>()
                 .HasOne(o => o.Customer)
                 .WithMany(c => c.Orders)
                 .HasForeignKey(o => o.CustomerId);
 
+            // Configure Cart-Customer relationship
             modelBuilder.Entity<Cart>()
                 .HasOne(c => c.Customer)
                 .WithOne()
                 .HasForeignKey<Cart>(c => c.CustomerId);
 
+            // Configure Review relationships
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Customer)
                 .WithMany(c => c.Reviews)
-                .HasForeignKey(r => r.CustomerId);
+                .HasForeignKey(r => r.CustomerId)
+                .OnDelete(DeleteBehavior.Restrict); // Prevent cascade delete on Customer
 
             modelBuilder.Entity<Review>()
                 .HasOne(r => r.Book)
                 .WithMany(b => b.Reviews)
-                .HasForeignKey(r => r.BookId);
+                .HasForeignKey(r => r.BookId)
+                .OnDelete(DeleteBehavior.Cascade); // Allow cascade delete on Book
 
-            // Configure primary key
+            // Configure OrderBook relationships
             modelBuilder.Entity<OrderBook>()
                 .HasKey(ob => ob.OrderBookId);
 
-            // Configure relationships
             modelBuilder.Entity<OrderBook>()
                 .HasOne(ob => ob.Order)
                 .WithMany(o => o.OrderBooks)
                 .HasForeignKey(ob => ob.OrderId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Cascade); // Cascade delete from Order to OrderBook
 
             modelBuilder.Entity<OrderBook>()
                 .HasOne(ob => ob.Book)
                 .WithMany(b => b.OrderBooks)
                 .HasForeignKey(ob => ob.BookId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Restrict); // Restrict delete from Book to OrderBook
 
-            modelBuilder.Entity<OrderBook>()
-                .HasOne(ob => ob.Book)  
-                .WithMany(b => b.OrderBooks)  
-                .HasForeignKey(ob => ob.BookId)
-                .OnDelete(DeleteBehavior.Cascade);  
+            // Configure Admin and Customer inheritance
+            modelBuilder.Entity<Admin>().ToTable("Admins");
+            modelBuilder.Entity<Customer>().ToTable("Customers");
+            modelBuilder.Entity<User>().ToTable("Users");
         }
+
+
+
+
+
     }
 
 

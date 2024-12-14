@@ -2,23 +2,24 @@
 using OnlineBookStore.Models;
 using System.Linq;
 using System.Windows;
+using OnlineBookStore.Utilities;
 
 namespace OnlineBookStore.Views
 {
     public partial class ManageOrdersView : Window
     {
-        private readonly OrderService _orderService;
+        private readonly OrderManagementService _orderManagementService;
 
         public ManageOrdersView()
         {
             InitializeComponent();
-            _orderService = new OrderService();
+            _orderManagementService = new OrderManagementService();
             LoadOrders();
         }
 
         private void LoadOrders()
         {
-            var orders = _orderService.GetOrderHistory()
+            var orders = _orderManagementService.GetAllOrders()
                 .Select(o => new
                 {
                     o.OrderId,
@@ -37,7 +38,7 @@ namespace OnlineBookStore.Views
             if (selectedOrder != null)
             {
                 var orderId = selectedOrder.OrderId;
-                var success = _orderService.ConfirmOrder(orderId); // Ensure ConfirmOrder is implemented in OrderService
+                var success = _orderManagementService.ConfirmOrder(orderId); // Ensure ConfirmOrder is implemented in OrderService
                 if (success)
                 {
                     MessageBox.Show("Order confirmed successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -60,7 +61,7 @@ namespace OnlineBookStore.Views
             if (selectedOrder != null)
             {
                 var orderId = selectedOrder.OrderId;
-                var success = _orderService.CancelOrder(orderId);
+                var success = _orderManagementService.CancelOrder(orderId);
                 if (success)
                 {
                     MessageBox.Show("Order canceled successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
