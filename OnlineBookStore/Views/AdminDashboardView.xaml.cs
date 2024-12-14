@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using OnlineBookStore.Services;
+using System.Windows;
 
 namespace OnlineBookStore.Views
 {
@@ -48,6 +49,8 @@ namespace OnlineBookStore.Views
 
         private void LogoutButton_Click(object sender, RoutedEventArgs e)
         {
+            var um = new UserManagementService();
+            um.LogOut();
             var mainWindow = new MainWindow();
             mainWindow.Show();
             this.Close();

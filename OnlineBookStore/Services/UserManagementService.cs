@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace OnlineBookStore.Services
 {
-    public class UserManagementService
+    public class UserManagementService : IUserManagementService
     {
         private readonly IUserRepository _userRepository;
         private readonly INotificationService _notificationService;
@@ -72,7 +72,10 @@ namespace OnlineBookStore.Services
             return true;
         }
 
-
+        public void LogOut()
+        {
+            UserSession.Instance.ClearSession();
+        }
 
 
     }
